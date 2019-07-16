@@ -1,5 +1,8 @@
 {
     "name": "free-donut/gendiff",
+    "bin": [
+        "bin/gendiff"
+    ],
     "description": "cli application",
     "type": "project",
     "license": "MIT",
