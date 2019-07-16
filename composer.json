@@ -1,0 +1,7 @@
+{
+    "name": "free-donut/gendiff",
+    "description": "cli application",
+    "type": "project",
+    "license": "MIT",
+    "require": {}
+}
