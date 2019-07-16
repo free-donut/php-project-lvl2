@@ -3,5 +3,7 @@
     "description": "cli application",
     "type": "project",
     "license": "MIT",
-    "require": {}
+    "require": {
+        "docopt/docopt": "^1.0"
+    }
 }
