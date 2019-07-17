@@ -1,1 +1,26 @@
 #!/usr/bin/env php
+<?php
+
+$doc = <<<DOC
+Generate diff
+
+Usage:
+  gendiff (-h|--help)
+  gendiff [--format <fmt>] <firstFile> <secondFile>
+
+Options:
+  -h --help                     Show this screen
+  --format <fmt>                Report format [default: pretty]
+
+DOC;
+
+$autoloadPath1 = __DIR__ . '/../../../docopt/docopt/src/docopt.php';
+$autoloadPath2 = __DIR__ . '/../vendor/docopt/docopt/src/docopt.php';
+if (file_exists($autoloadPath1)) {
+    require_once $autoloadPath1;
+} else {
+    require_once $autoloadPath2;
+}
+$args = Docopt::handle($doc, array('version'=>'Naval Fate 2.0'));
+foreach ($args as $k=>$v)
+    echo $k.': '.json_encode($v).PHP_EOL;
