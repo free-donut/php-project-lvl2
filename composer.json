@@ -1,8 +1,7 @@
 {
     "name": "free-donut/gendiff",
     "bin": [
-        "bin/gendiff",
-        "bin/test"
+        "bin/gendiff"
     ],
     "description": "cli application",
     "type": "project",
