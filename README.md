@@ -9,4 +9,4 @@
 
 install genDiff
 
-[![asciicast](https://asciinema.org/a/av9SvuCk2in64lhDQArEuO8a0.svg)](https://asciinema.org/a/av9SvuCk2in64lhDQArEuO8a0)
+[![asciicast](https://asciinema.org/a/QGuLWBwvf6MNd1l8v4hIZ6pSo.svg)](https://asciinema.org/a/QGuLWBwvf6MNd1l8v4hIZ6pSo)
