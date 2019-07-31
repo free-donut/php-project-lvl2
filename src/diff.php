@@ -2,6 +2,15 @@
 namespace GenDiff\Diff;
 
 use \Funct\Collection;
+
+function boolToString($value)
+{
+  if (is_bool($value)) {
+    return ($value === true) ? 'true' : 'false';
+  }
+  return $value;
+}
+
 function getArray($filePath)
 {
   if(file_exists($filePath)) {
@@ -25,17 +34,22 @@ function getDiff($pathToFile1, $pathToFile2)
   $reduceArray = array_reduce($unionKeys, function ($acc, $key) use ($array1, $array2) {
     if (isset($array1[$key]) && isset($array2[$key])) {
       if ($array1[$key] == $array2[$key]) {
-        $newAcc = "$acc    $key: $array1[$key]\n";
+        $elem = boolToString($array1[$key]);
+        $newAcc = "$acc    $key: $elem\n";
         return $newAcc;
       } else {
-        $newAcc = "$acc  + $key: $array2[$key]\n  - $key: $array1[$key]\n";
+        $elem1 = boolToString($array1[$key]);
+        $elem2 = boolToString($array2[$key]);
+        $newAcc = "$acc  + $key: $elem2\n  - $key: $elem1\n";
         return $newAcc;
       }      
     } if (isset($array1[$key])) {
-      $newAcc = "$acc  - $key: $array1[$key]\n";
+      $elem = boolToString($array1[$key]);
+      $newAcc = "$acc  - $key: $elem\n";
       return $newAcc;
     } else {
-      $newAcc = "$acc  + $key: $array2[$key]\n";
+      $elem = boolToString($array2[$key]);
+      $newAcc = "$acc  + $key: $elem\n";
       return $newAcc;
     }
   }, '');
