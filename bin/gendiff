@@ -34,5 +34,6 @@ if (file_exists($autoloadPath1)) {
     require_once $autoloadPath2;
 }
 
-$diff = GenDiff\Diff\getDiff($args);
-echo $diff;
+[$pathToFile1, $pathToFile2] = [$args['<firstFile>'], $args['<secondFile>']];
+$diff = GenDiff\Diff\getDiff($pathToFile1, $pathToFile2);
+print_r($diff);

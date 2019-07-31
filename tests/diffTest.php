@@ -12,9 +12,7 @@ class diffTest extends TestCase
     {
     	$equals = "{\n    host: hexlet.io\n  + timeout: 20\n  - timeout: 50\n  - proxy: 123.234.53.22\n  + verbose: 1\n}\n";
 
-        $args = ["<firstFile>" => "before.json", "<secondFile>" => "after.json"];
-
-        $actual = getDiff($args);
+        $actual = getDiff('tests/testFiles/before.json', 'tests/testFiles/after.json');
 
         $this->assertEquals($equals, $actual);
     }

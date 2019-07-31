@@ -13,11 +13,11 @@ function getArray($filePath)
   return $array;
 }
 
-function getDiff($args)
+function getDiff($pathToFile1, $pathToFile2)
 { 
 
-  $array1 = getArray($args['<firstFile>']);
-  $array2 = getArray($args['<secondFile>']);
+  $array1 = getArray($pathToFile1);
+  $array2 = getArray($pathToFile2);
 
   $unionArray = Collection\union($array1, $array2);
   $unionKeys = array_keys(($unionArray));
@@ -39,6 +39,7 @@ function getDiff($args)
       return $newAcc;
     }
   }, '');
+
   //echo ("{\n$reduceArray}\n");
   return ("{\n$reduceArray}\n");
 }
