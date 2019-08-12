@@ -2,6 +2,8 @@
 namespace GenDiff\Diff;
 
 use \Funct\Collection;
+use function GenDiff\Parse\parser;
+
 
 function boolToString($value)
 {
@@ -11,22 +13,11 @@ function boolToString($value)
   return $value;
 }
 
-function getArray($filePath)
-{
-  if(file_exists($filePath)) {
-    $fileContent = file_get_contents($filePath);
-    $array = json_decode($fileContent, true);
-  } else {
-    $array = [];
-  }
-  return $array;
-}
-
 function getDiff($pathToFile1, $pathToFile2)
 { 
 
-  $array1 = getArray($pathToFile1);
-  $array2 = getArray($pathToFile2);
+  $array1 = parser($pathToFile1);
+  $array2 = parser($pathToFile2);
 
   $unionArray = Collection\union($array1, $array2);
   $unionKeys = array_keys(($unionArray));
@@ -54,6 +45,5 @@ function getDiff($pathToFile1, $pathToFile2)
     }
   }, '');
 
-  //echo ("{\n$reduceArray}\n");
   return ("{\n$reduceArray}\n");
 }
