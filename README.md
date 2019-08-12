@@ -10,3 +10,7 @@
 install genDiff
 
 [![asciicast](https://asciinema.org/a/kNFdvQxDCIc4WJPsnbXBXshmH.svg)](https://asciinema.org/a/kNFdvQxDCIc4WJPsnbXBXshmH)
+
+
+parse yml
+[![asciicast](https://asciinema.org/a/q6MzxdG39IeXdLtIDJrCT1V1q.svg)](https://asciinema.org/a/q6MzxdG39IeXdLtIDJrCT1V1q)
