@@ -20,7 +20,8 @@
         "files": [
             "src/diff.php",
             "src/test.php",
-            "src/parse.php"
+            "src/parse.php",
+            "src/builder.php"
         ],
         "psr-4": {
             "GenDiff\\Tests\\": "tests"
