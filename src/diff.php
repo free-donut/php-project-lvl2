@@ -3,6 +3,9 @@ namespace GenDiff\Diff;
 
 use \Funct\Collection;
 use function GenDiff\Parse\parser;
+use function GenDiff\Render\render;
+use function GenDiff\Builder\buildAST;
+
 
 
 function boolToString($value)
@@ -13,7 +16,7 @@ function boolToString($value)
   return $value;
 }
 
-function getDiff($pathToFile1, $pathToFile2)
+/*function getDiff($pathToFile1, $pathToFile2)
 { 
 
   $array1 = parser($pathToFile1);
@@ -46,4 +49,15 @@ function getDiff($pathToFile1, $pathToFile2)
   }, '');
 
   return ("{\n$reduceArray}\n");
+}
+*/
+
+function getDiff($pathToFile1, $pathToFile2)
+{
+
+  $array1 = parser($pathToFile1);
+  $array2 = parser($pathToFile2);
+  $ast = buildAST($array1, $array2);
+  $render = render($ast, '');
+  return "{\n$render}\n";
 }
