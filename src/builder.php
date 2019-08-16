@@ -16,7 +16,6 @@ function buildNode($type, $key, $beforeValue, $afterValue, $child = null)
   return $node;
 }
 
-
 function buildAST($array1, $array2)
 {
   $unionKeys = Collection\union(array_keys($array1), array_keys($array2));
