@@ -53,7 +53,7 @@ function render($ast, $indent = '')
       $key = $node['key'];
       $beforeValue = boolToString($node['beforeValue']);
       $afterValue = boolToString($node['afterValue']);
-      $newAcc = $acc . $indent . ADD . $key . ": $beforeValue\n" .$indent . DELETE . $key . ": $afterValue\n";
+      $newAcc = $acc . $indent . ADD . $key . ": $afterValue\n" .$indent . DELETE . $key . ": $beforeValue\n";
       return $newAcc; 
     } if ($node['type'] == 'deleted') {
       $key = $node['key'];
