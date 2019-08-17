@@ -16,38 +16,38 @@ function buildNode($type, $key, $beforeValue, $afterValue, $child = null)
   return $node;
 }
 
-function buildAST($array1, $array2)
+function buildAST($beforeData, $afterData)
 {
-  $unionKeys = Collection\union(array_keys($array1), array_keys($array2));
+  $unionKeys = Collection\union(array_keys($beforeData), array_keys($afterData));
 
-  $reduceArray = array_reduce($unionKeys, function ($acc, $key) use ($array1, $array2) {
+  $reduceArray = array_reduce($unionKeys, function ($acc, $key) use ($beforeData, $afterData) {
   	//если существуют оба значения
-    if (isset($array1[$key]) && isset($array2[$key])) {
+    if (isset($beforeData[$key]) && isset($afterData[$key])) {
     	//если оба значения - массивы
-      if (is_array($array1[$key]) && is_array($array2[$key])) {
+      if (is_array($beforeData[$key]) && is_array($afterData[$key])) {
       	//вернуть АСД массивов
-      	$child = buildAST($array1[$key], $array2[$key]);
+      	$child = buildAST($beforeData[$key], $afterData[$key]);
       	$elem = buildNode('array', $key, null, null, $child);
       	$acc[] = $elem; 
         return $acc;
         // если оба значения равны
-      } if ($array1[$key] == $array2[$key]) {
+      } if ($beforeData[$key] == $afterData[$key]) {
       	//вернуть АСД с типом "без изменений"
-      	$elem = buildNode('unchanged', $key, $array1[$key], $array2[$key], '');
+      	$elem = buildNode('unchanged', $key, $beforeData[$key], $afterData[$key], '');
       } else {
       	//венуть АСД с типом "изменен"
-      	$elem = buildNode('changed', $key, $array1[$key], $array2[$key], '');
+      	$elem = buildNode('changed', $key, $beforeData[$key], $afterData[$key], '');
       }
       $acc[] = $elem;
       return $acc;    
     // если существует только первое значение
-    } if (isset($array1[$key])) {
+    } if (isset($beforeData[$key])) {
       //вернуть АСД с типом "удален"
-      $elem = buildNode('deleted', $key, $array1[$key], null, '');
+      $elem = buildNode('deleted', $key, $beforeData[$key], null, '');
     //если существует только второе значение
     } else {
       //вернуть АСД со значением "добавен"
-      $elem = buildNode('added', $key, null, $array2[$key], '');
+      $elem = buildNode('added', $key, null, $afterData[$key], '');
     }
       $acc[] = $elem;
       return $acc;    

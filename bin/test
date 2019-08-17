@@ -9,33 +9,17 @@ if (file_exists($autoloadPath1)) {
     require_once $autoloadPath2;
 }
 
-/*$code =  '{
-  "common": {
-    "setting1": "Value 1",
-    "setting2": "200",
-    "setting3": true,
-    "setting6": {
-      "key": "value"
-    }
-  },
-  "group1": {
-    "baz": "bas",
-    "foo": "bar"
-  },
-  "group2": {
-    "abc": "12345"
-  }
-}';
-var_dump(ast\parse_code($code, $version=50));*/
 use \Funct\Collection;
 $filePath1 = 'tests/testFiles/before1.json';
 $filePath2 = 'tests/testFiles/after1.json';
 
-$array1 = \GenDiff\Test\parse('tests/testFiles/before1.json');
-$array2 = \GenDiff\Test\parse('tests/testFiles/after1.json');
+$array1 = \GenDiff\Parse\parser('tests/testFiles/before1.json');
+$array2 = \GenDiff\Parse\parser('tests/testFiles/after1.json');
 
-$ast = \GenDiff\Test\buildAST($array1, $array2);
+$ast = \GenDiff\Builder\buildAST($array1, $array2);
 //var_dump($ast);
 $render = \GenDiff\Render\render($ast, '');
-print_r("{\n$render}\n");
+//print_r("{\n$render}\n");
+$encode = json_encode($ast, JSON_PRETTY_PRINT);
+print_r($encode);
 //print_r(json_encode($ast));
