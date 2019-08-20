@@ -11,8 +11,10 @@
 
   ``` bash
   $ gendiff (-h|--help)
+   ``` 
+   ``` bash
   $ gendiff [--format <fmt>] <firstFile> <secondFile>
-  ```
+   ```
   
 Options:
 
