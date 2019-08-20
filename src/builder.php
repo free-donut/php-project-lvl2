@@ -23,17 +23,15 @@ function buildAST($beforeData, $afterData)
   $reduceArray = array_reduce($unionKeys, function ($acc, $key) use ($beforeData, $afterData) {
   	//если существуют оба значения
     if (isset($beforeData[$key]) && isset($afterData[$key])) {
-    	//если оба значения - массивы
-      if (is_array($beforeData[$key]) && is_array($afterData[$key])) {
-      	//вернуть АСД массивов
-      	$child = buildAST($beforeData[$key], $afterData[$key]);
-      	$elem = buildNode('array', $key, null, null, $child);
-      	$acc[] = $elem; 
-        return $acc;
-        // если оба значения равны
-      } if ($beforeData[$key] == $afterData[$key]) {
-      	//вернуть АСД с типом "без изменений"
-      	$elem = buildNode('unchanged', $key, $beforeData[$key], $afterData[$key], '');
+      if ($beforeData[$key] == $afterData[$key]) {
+        //вернуть АСД с типом "без изменений"
+        $elem = buildNode('unchanged', $key, $beforeData[$key], $afterData[$key], '');
+      //если оба значения - массивы
+        $acc[] = $elem;
+        return $acc;         
+      } if (is_array($beforeData[$key]) && is_array($afterData[$key])) {
+        $child = buildAST($beforeData[$key], $afterData[$key]);
+        $elem = buildNode('array', $key, null, null, $child);
       } else {
       	//венуть АСД с типом "изменен"
       	$elem = buildNode('changed', $key, $beforeData[$key], $afterData[$key], '');

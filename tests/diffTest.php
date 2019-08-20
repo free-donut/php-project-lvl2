@@ -8,6 +8,8 @@ use function GenDiff\Diff\getDiff;
 use function GenDiff\Diff\getArray;
 use function GenDiff\Builder\buildAST;
 use function GenDiff\Parse\parser;
+use function GenDiff\Plain\getPlain;
+
 
 class diffTest extends TestCase
 {
@@ -37,5 +39,17 @@ class diffTest extends TestCase
 		$afterData = parser('tests/testFiles/after.json');
     	$actual = buildAST($beforeData, $afterData);
     	$this->assertEquals($equals, $actual);
+    }
+
+    public function testGetPlain()
+    {
+    	$equals = "Property 'common.setting2' was removed\nProperty 'common.setting6' was removed\nProperty 'common.setting4' was added with value: 'blah blah'\nProperty 'common.setting5' was added with value: 'complex value'\nProperty 'group1.baz' was changed. From 'bas' to 'bars'\nProperty 'group2' was removed\nProperty 'group3' was added with value: 'complex value'\n";
+    	
+	    $array1 = \GenDiff\Parse\parser('tests/testFiles/before1.json');
+		$array2 = \GenDiff\Parse\parser('tests/testFiles/after1.json');
+
+		$ast = \GenDiff\Builder\buildAST($array1, $array2);
+    	$actual = getPlain($ast);
+     	$this->assertEquals($equals, $actual);   	
     }
 }

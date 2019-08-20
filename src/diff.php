@@ -5,7 +5,7 @@ use \Funct\Collection;
 use function GenDiff\Parse\parser;
 use function GenDiff\Render\render;
 use function GenDiff\Builder\buildAST;
-
+use function GenDiff\Plain\getPlain;
 
 
 function boolToString($value)
@@ -17,12 +17,17 @@ function boolToString($value)
 }
 
 
-function getDiff($pathToFile1, $pathToFile2)
+function getDiff($pathToFile1, $pathToFile2, $format)
 {
 
   $beforeData = parser($pathToFile1);
   $afterData = parser($pathToFile2);
+
   $ast = buildAST($beforeData, $afterData);
-  $render = render($ast, '');
-  return "{\n$render}\n";
+  if ($format == 'json') {
+  	$diff = render($ast, '');
+  } else {
+  	$diff = getPlain($ast);
+  }
+  return "{\n$diff}\n";
 }
