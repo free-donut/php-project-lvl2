@@ -17,12 +17,12 @@ class diffTest extends TestCase
     {
     	$equals = "{\n    host: hexlet.io\n  + timeout: 20\n  - timeout: 50\n  - proxy: 123.234.53.22\n  + verbose: true\n}\n";
 
-        $actual = getDiff('tests/testFiles/before.json', 'tests/testFiles/after.json');
+        $actual = getDiff('tests/testFiles/before.json', 'tests/testFiles/after.json', 'json');
 
         $this->assertEquals($equals, $actual);
 
         $equals2 = "{\n    common: {\n        setting1: Value 1\n      - setting2: 200\n        setting3: true\n      - setting6: {\n            key: value\n        }\n      + setting4: blah blah\n      + setting5: {\n            key5: value5\n        }\n    }\n    group1: {\n      + baz: bars\n      - baz: bas\n        foo: bar\n    }\n  - group2: {\n        abc: 12345\n    }\n  + group3: {\n        fee: 100500\n    }\n}\n";
-        $actual2 = getDiff('tests/testFiles/before1.json', 'tests/testFiles/after1.json');
+        $actual2 = getDiff('tests/testFiles/before1.json', 'tests/testFiles/after1.json', 'json');
         $this->assertEquals($equals2, $actual2);
     }
 
