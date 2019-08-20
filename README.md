@@ -8,13 +8,12 @@
 
 
 ## Usage:
-
-  ``` bash
-  $ gendiff (-h|--help)
-   ``` 
-   ``` bash
-  $ gendiff [--format <fmt>] <firstFile> <secondFile>
-   ```
+``` bash
+$ gendiff (-h|--help)
+``` 
+``` bash
+$ gendiff [--format <fmt>] <firstFile> <secondFile>
+```
   
 Options:
 
@@ -28,9 +27,9 @@ You can choose json or plain format
 
 Via Composer
 
-  ``` bash
-  $ composer global require free-donut/gendiff
-  ```
+``` bash
+$ composer global require free-donut/gendiff
+```
 
 [![asciicast](https://asciinema.org/a/kNFdvQxDCIc4WJPsnbXBXshmH.svg)](https://asciinema.org/a/kNFdvQxDCIc4WJPsnbXBXshmH)
 
