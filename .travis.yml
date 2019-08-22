@@ -1,8 +1,17 @@
 language: php
 php:
     - 7.2
-
+    
+before_script: 
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter 
+  - chmod +x ./cc-test-reporter 
+  - ./cc-test-reporter before-build
+  
 install:
   - make install
 
 script: make lint test
+
+after_script: 
+  - mv tests/_output/coverage.xml clover.xml 
+  - ./cc-test-reporter after-build --coverage-input-type clover --id 12345 --exit-code $TRAVIS_TEST_RESULT
