@@ -5,6 +5,7 @@ use \Funct\Collection;
 use function GenDiff\Parse\parser;
 use function GenDiff\Render\render;
 use function GenDiff\Builder\buildAST;
+use function GenDiff\Builder\buildMapAST;
 use function GenDiff\Plain\getPlain;
 
 
@@ -23,11 +24,14 @@ function getDiff($pathToFile1, $pathToFile2, $format)
   $beforeData = parser($pathToFile1);
   $afterData = parser($pathToFile2);
 
-  $ast = buildAST($beforeData, $afterData);
+  $ast = buildMapAST($beforeData, $afterData);
   if ($format == 'json') {
   	$diff = render($ast, '');
-  } else {
+  } if ($format == 'plain') {
   	$diff = getPlain($ast);
+  } if ($format == 'pretty') {
+  	$diff = json_encode($ast);
   }
+  //сделать исключение если не поддерживаемый формат
   return "{\n$diff}\n";
 }

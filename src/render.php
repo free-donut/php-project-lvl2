@@ -35,14 +35,13 @@ function arrayOrString($value, $indent) {
 }
 function render($ast, $indent = '')
 {
-  $reduceArray = array_reduce($ast, function ($acc, $node) use ($indent) {
+  $view = array_reduce($ast, function ($acc, $node) use ($indent) {
     $key = $node['key'];
     $type = $node["type"];
     if ($type === "array") {
       $newIndent = $indent . INDENT;
       $nested = render($node['child'], $newIndent);
       $newAcc = $acc . INDENT . $key .": {\n" . $nested .INDENT . "}\n";
-
     } if ($type === "unchanged") {
       $value = arrayOrString($node['beforeValue'], $indent);
       $newAcc = $acc . $indent . INDENT . $key . ": $value\n";
@@ -51,18 +50,14 @@ function render($ast, $indent = '')
       $beforeValue = boolToString($node['beforeValue']);
       $afterValue = boolToString($node['afterValue']);
       $newAcc = $acc . $indent . ADD . $key . ": $afterValue\n" .$indent . DELETE . $key . ": $beforeValue\n";
-
     } if ($type === 'deleted') {
         $deletedElem = arrayOrString($node['beforeValue'], $indent);
-        $newAcc = $acc . $indent . DELETE . $key . ": $deletedElem\n";
-  
+        $newAcc = $acc . $indent . DELETE . $key . ": $deletedElem\n";  
     } if ($type === 'added') {
         $addedElem = arrayOrString($node['afterValue'], $indent);
-        $newAcc = $acc . $indent . ADD . $key . ": $addedElem\n";
-       
+        $newAcc = $acc . $indent . ADD . $key . ": $addedElem\n";       
     }
   return $newAcc;
   }, '');
-
-  return  $reduceArray;
+  return  $view;
 }

@@ -15,7 +15,12 @@ function parser($filePath)
   	} if ($extention == 'json') {
       $array = json_decode($fileContent, true);
     }
+    //сделать исключение для формата файла
   } else {
+    /*
+    $e = new \Exception("Extention '{$extention}' is not supported");
+    throw $e;
+    */
     $array = [];
   }
   return $array;

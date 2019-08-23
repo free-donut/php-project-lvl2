@@ -14,7 +14,7 @@ function stringOrArray ($value) {
 
 function getPlain($ast, $parent = '')
 {
-	$reduceArray = array_reduce($ast, function ($acc, $node) use ($parent) {
+	$view = array_reduce($ast, function ($acc, $node) use ($parent) {
 	    if ($parent == '') {
 	    	$property = $node["key"];
 	    }else {
@@ -22,22 +22,23 @@ function getPlain($ast, $parent = '')
 	    }
 	    $key = $node['key'];
 	    $type = $node["type"];
-	    if ($type == 'array') {
-	    	$elem = getPlain($node["child"], $property);
-	    	$acc[] = $elem;
+	    if ($type == 'unchanged') {
 	    	return $acc;
+	    } if ($type == 'array') {
+	    	$elem = getPlain($node["child"], $property);
 	    } if ($type == 'changed') {	    
 	    	$beforeValue = stringOrArray($node['beforeValue']);
-		    $afterValue = stringOrArray($node['afterValue']);	    	
-	    	$acc[] = "Property '$property' was changed. From '$beforeValue' to '$afterValue'\n";
+		    $afterValue = stringOrArray($node['afterValue']);
+		    $elem = "Property '$property' was changed. From '$beforeValue' to '$afterValue'\n";
 	    } if ($type =='deleted') {
-			$acc[] = "Property '$property' was removed\n";
+	    	$elem = "Property '$property' was removed\n";
 	    } if ($type == 'added') {
 	    	$afterValue = stringOrArray($node['afterValue']);
-	    	$acc[] = "Property '$property' was added with value: '$afterValue'\n";
+	    	$elem = "Property '$property' was added with value: '$afterValue'\n";
 	    }
-	    return $acc;
-	}, []);
-	return implode('', $reduceArray);
+	    $newAcc = $acc . $elem;
+	    return $newAcc;
+	}, '');
+	return $view;
 }
 

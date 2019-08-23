@@ -34,12 +34,15 @@ if (file_exists($autoloadPath1)) {
     require_once $autoloadPath2;
 }
 
-if ($args['--format'] == 'plain') {
-	$format = 'plain';
-} else {
-	$format = 'json';	
-}
 
+$format = $args['--format'];
+//var_dump($args);
+
+/*try {
+  
+} catch (\Exception $e) {
+  
+}*/
 [$pathToFile1, $pathToFile2] = [$args['<firstFile>'], $args['<secondFile>']];
 $diff = GenDiff\Diff\getDiff($pathToFile1, $pathToFile2, $format);
 print_r($diff);
