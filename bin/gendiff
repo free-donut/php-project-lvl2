@@ -38,11 +38,14 @@ if (file_exists($autoloadPath1)) {
 $format = $args['--format'];
 //var_dump($args);
 
-/*try {
-  
+try {
+  [$pathToFile1, $pathToFile2] = [$args['<firstFile>'], $args['<secondFile>']];
+  $diff = GenDiff\Diff\getDiff($pathToFile1, $pathToFile2, $format);
+  print_r($diff);
 } catch (\Exception $e) {
-  
-}*/
+  echo $e->getMessage();
+}
+/*
 [$pathToFile1, $pathToFile2] = [$args['<firstFile>'], $args['<secondFile>']];
 $diff = GenDiff\Diff\getDiff($pathToFile1, $pathToFile2, $format);
-print_r($diff);
+print_r($diff);*/

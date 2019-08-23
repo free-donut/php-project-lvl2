@@ -14,14 +14,14 @@ function parser($filePath)
   	  $array = get_object_vars($value);
   	} if ($extention == 'json') {
       $array = json_decode($fileContent, true);
+    } else {
+    $e = new \Exception("Extention '{$extention}' is not supported\n");
+    throw $e;      
     }
+    return $array;  
     //сделать исключение для формата файла
-  } else {
-    /*
-    $e = new \Exception("Extention '{$extention}' is not supported");
+  } else {    
+    $e = new \Exception("'{$filePath}' is not exist\n");
     throw $e;
-    */
-    $array = [];
   }
-  return $array;
 }

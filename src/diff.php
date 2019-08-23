@@ -31,6 +31,9 @@ function getDiff($pathToFile1, $pathToFile2, $format)
   	$diff = getPlain($ast);
   } if ($format == 'pretty') {
   	$diff = json_encode($ast);
+  } else {
+    $e = new \Exception("Format '{$format}' is not supported\n");
+    throw $e; 
   }
   //сделать исключение если не поддерживаемый формат
   return "{\n$diff}\n";
