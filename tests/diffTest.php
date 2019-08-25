@@ -9,10 +9,21 @@ use function GenDiff\Diff\getArray;
 use function GenDiff\Builder\buildAST;
 use function GenDiff\Parse\parser;
 use function GenDiff\Plain\getPlain;
-
+use function GenDiff\Render\render;
 
 class diffTest extends TestCase
 {
+    public function testParser()
+    {
+        $equals = ["host" => "hexlet.io", "timeout" => 50, "proxy" => "123.234.53.22"];
+
+        $filePath = 'tests/testFiles/before.yml';
+   
+        $actual = parser($filePath);
+        $this->assertEquals($equals, $actual);
+    }
+
+
     public function testGetDiff()
     {
     	$equals = "{\n    host: hexlet.io\n  + timeout: 20\n  - timeout: 50\n  - proxy: 123.234.53.22\n  + verbose: true\n}\n";
@@ -50,6 +61,19 @@ class diffTest extends TestCase
 
 		$ast = \GenDiff\Builder\buildAST($array1, $array2);
     	$actual = getPlain($ast);
-     	$this->assertEquals($equals, $actual);   	
+     	$this->assertEquals($equals, $actual);
+    }
+
+    public function testRender()
+    {
+        $equals = "{\n    host: hexlet.io\n  + timeout: 20\n  - timeout: 50\n  - proxy: 123.234.53.22\n  + verbose: true\n}\n";
+
+        $array1 = \GenDiff\Parse\parser('tests/testFiles/before.json');
+        $array2 = \GenDiff\Parse\parser('tests/testFiles/after.json');
+
+        $ast = \GenDiff\Builder\buildAST($array1, $array2);
+        $render = render($ast, '');
+        $actual = "{\n$render}\n";
+        $this->assertEquals($equals, $actual);
     }
 }
