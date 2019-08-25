@@ -25,7 +25,7 @@ function arrayToString($array, $indent = '')
     return $reduceArray;
 }
 
-function arrayOrString($value, $indent) {
+function convertValue($value, $indent) {
   if (is_array($value)) {
     $elem = arrayToString($value, $indent);
     return "{\n" . $elem . $indent . INDENT . "}";
@@ -45,21 +45,21 @@ function render($ast, $indent = '')
         $newAcc = $acc . INDENT . $key .": {\n" . $nested .INDENT . "}\n";        
         break;
       case 'unchanged':
-        $value = arrayOrString($node['beforeValue'], $indent);
-        $newAcc = $acc . $indent . INDENT . $key . ": $value\n";
+        $elem = convertValue($node['beforeValue'], $indent);
+        $newAcc = $acc . $indent . INDENT . $key . ": $elem\n";
         break; 
       case 'changed':
       //node с типом 'изменен' может содержать только строки
-        $beforeValue = boolToString($node['beforeValue']);
-        $afterValue = boolToString($node['afterValue']);
-        $newAcc = $acc . $indent . ADD . $key . ": $afterValue\n" .$indent . DELETE . $key . ": $beforeValue\n";        
+        $beforeElem = boolToString($node['beforeValue']);
+        $afterElem = boolToString($node['afterValue']);
+        $newAcc = $acc . $indent . ADD . $key . ": $afterElem\n" .$indent . DELETE . $key . ": $beforeElem\n";        
         break; 
       case 'deleted':
-        $deletedElem = arrayOrString($node['beforeValue'], $indent);
+        $deletedElem = convertValue($node['beforeValue'], $indent);
         $newAcc = $acc . $indent . DELETE . $key . ": $deletedElem\n";
         break; 
       case 'added':
-        $addedElem = arrayOrString($node['afterValue'], $indent);
+        $addedElem = convertValue($node['afterValue'], $indent);
         $newAcc = $acc . $indent . ADD . $key . ": $addedElem\n";
         break; 
     }

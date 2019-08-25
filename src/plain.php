@@ -10,7 +10,7 @@ function boolToString($value)
   return $value;
 }
 
-function stringOrArray ($value) {
+function convertValue ($value) {
 	if (is_array($value)) {
 		return 'complex value';
 	} else {
@@ -36,15 +36,15 @@ function getPlain($ast, $parent = '')
 	    		$elem = getPlain($node["child"], $property);
 	    		break;
 	    	case 'changed':
-		    	$beforeValue = stringOrArray($node['beforeValue']);
-			    $afterValue = stringOrArray($node['afterValue']);
+		    	$beforeValue = convertValue($node['beforeValue']);
+			    $afterValue = convertValue($node['afterValue']);
 			    $elem = "Property '$property' was changed. From '$beforeValue' to '$afterValue'\n";
 	    		break;
 	    	case 'deleted':
 	    		$elem = "Property '$property' was removed\n";
 	    		break;
 	    	case 'added':
-	    		$afterValue = stringOrArray($node['afterValue']);
+	    		$afterValue = convertValue($node['afterValue']);
 		    	$elem = "Property '$property' was added with value: '$afterValue'\n";
 	    		break;
 	    }
