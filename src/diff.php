@@ -5,17 +5,7 @@ use \Funct\Collection;
 use function GenDiff\Parse\parser;
 use function GenDiff\Render\render;
 use function GenDiff\Builder\buildAST;
-use function GenDiff\Builder\buildMapAST;
 use function GenDiff\Plain\getPlain;
-
-
-function boolToString($value)
-{
-  if (is_bool($value)) {
-    return ($value === true) ? 'true' : 'false';
-  }
-  return $value;
-}
 
 
 function getDiff($pathToFile1, $pathToFile2, $format)
@@ -24,17 +14,22 @@ function getDiff($pathToFile1, $pathToFile2, $format)
   $beforeData = parser($pathToFile1);
   $afterData = parser($pathToFile2);
 
-  $ast = buildMapAST($beforeData, $afterData);
-  if ($format == 'json') {
-  	$diff = render($ast, '');
-  } if ($format == 'plain') {
-  	$diff = getPlain($ast);
-  } if ($format == 'pretty') {
-  	$diff = json_encode($ast);
-  } else {
-    $e = new \Exception("Format '{$format}' is not supported\n");
-    throw $e; 
+  $ast = buildAST($beforeData, $afterData);
+
+  switch ($format) {
+    case 'json':
+      $diff = render($ast, '');
+      break;
+    case 'plain':
+      $diff = getPlain($ast);
+      break;
+    case 'pretty':
+      $diff = json_encode($ast);
+      break;
+    default:
+      $e = new \Exception("Format '{$format}' is not supported\n");
+      throw $e;
+      break;
   }
-  //сделать исключение если не поддерживаемый формат
   return "{\n$diff}\n";
 }

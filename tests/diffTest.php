@@ -17,7 +17,7 @@ class diffTest extends TestCase
     {
     	$equals = "{\n    host: hexlet.io\n  + timeout: 20\n  - timeout: 50\n  - proxy: 123.234.53.22\n  + verbose: true\n}\n";
 
-        $actual = getDiff('tests/testFiles/before.json', 'tests/testFiles/after.json', 'json');
+        $actual = getDiff('tests/testFiles/before.json', 'tests/testFiles/after.json', "json");
 
         $this->assertEquals($equals, $actual);
 

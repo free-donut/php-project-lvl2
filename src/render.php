@@ -38,26 +38,32 @@ function render($ast, $indent = '')
   $view = array_reduce($ast, function ($acc, $node) use ($indent) {
     $key = $node['key'];
     $type = $node["type"];
-    if ($type === "array") {
-      $newIndent = $indent . INDENT;
-      $nested = render($node['child'], $newIndent);
-      $newAcc = $acc . INDENT . $key .": {\n" . $nested .INDENT . "}\n";
-    } if ($type === "unchanged") {
-      $value = arrayOrString($node['beforeValue'], $indent);
-      $newAcc = $acc . $indent . INDENT . $key . ": $value\n";
-    //node с типом изменен может содержать только строки
-    } if ($type === 'changed') {
-      $beforeValue = boolToString($node['beforeValue']);
-      $afterValue = boolToString($node['afterValue']);
-      $newAcc = $acc . $indent . ADD . $key . ": $afterValue\n" .$indent . DELETE . $key . ": $beforeValue\n";
-    } if ($type === 'deleted') {
+    switch ($type) {
+      case 'array':
+        $newIndent = $indent . INDENT;
+        $nested = render($node['child'], $newIndent);
+        $newAcc = $acc . INDENT . $key .": {\n" . $nested .INDENT . "}\n";        
+        break;
+      case 'unchanged':
+        $value = arrayOrString($node['beforeValue'], $indent);
+        $newAcc = $acc . $indent . INDENT . $key . ": $value\n";
+        break; 
+      case 'changed':
+      //node с типом 'изменен' может содержать только строки
+        $beforeValue = boolToString($node['beforeValue']);
+        $afterValue = boolToString($node['afterValue']);
+        $newAcc = $acc . $indent . ADD . $key . ": $afterValue\n" .$indent . DELETE . $key . ": $beforeValue\n";        
+        break; 
+      case 'deleted':
         $deletedElem = arrayOrString($node['beforeValue'], $indent);
-        $newAcc = $acc . $indent . DELETE . $key . ": $deletedElem\n";  
-    } if ($type === 'added') {
+        $newAcc = $acc . $indent . DELETE . $key . ": $deletedElem\n";
+        break; 
+      case 'added':
         $addedElem = arrayOrString($node['afterValue'], $indent);
-        $newAcc = $acc . $indent . ADD . $key . ": $addedElem\n";       
+        $newAcc = $acc . $indent . ADD . $key . ": $addedElem\n";
+        break; 
     }
-  return $newAcc;
+    return $newAcc;
   }, '');
   return  $view;
 }

@@ -16,7 +16,7 @@ function buildNode($type, $key, $beforeValue, $afterValue, $child = null)
   return $node;
 }
 
-function buildMapAST($beforeData, $afterData)
+function buildAST($beforeData, $afterData)
 {
   $unionKeys = Collection\union(array_keys($beforeData), array_keys($afterData));
 
@@ -28,7 +28,7 @@ function buildMapAST($beforeData, $afterData)
         $node = buildNode('unchanged', $key, $beforeData[$key], $afterData[$key], '');
         return $node;     
       //если оба значения - массивы
-      } if (is_array($beforeData[$key]) && is_array($afterData[$key])) {
+      } elseif (is_array($beforeData[$key]) && is_array($afterData[$key])) {
         //вернуть вложенный node
         $child = buildAST($beforeData[$key], $afterData[$key]);
         $node = buildNode('array', $key, null, null, $child);
@@ -38,7 +38,7 @@ function buildMapAST($beforeData, $afterData)
       }
       return $node;    
     // если существует только первое значение
-    } if (isset($beforeData[$key])) {
+    } elseif (isset($beforeData[$key])) {
       //вернуть АСД с типом "удален"
       $node = buildNode('deleted', $key, $beforeData[$key], null, '');
     //если существует только второе значение
@@ -49,5 +49,5 @@ function buildMapAST($beforeData, $afterData)
       return $node;    
   }, $unionKeys);
   
-  return $ast;
+  return array_values($ast);
 }

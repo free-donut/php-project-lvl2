@@ -9,17 +9,20 @@ function parser($filePath)
   if(file_exists($filePath)) {
   	$fileContent = file_get_contents($filePath);
   	$extention = pathinfo($filePath, PATHINFO_EXTENSION);
-  	if ($extention == 'yml') {
-      $value = Yaml::parse($fileContent, Yaml::PARSE_OBJECT_FOR_MAP);
-  	  $array = get_object_vars($value);
-  	} if ($extention == 'json') {
-      $array = json_decode($fileContent, true);
-    } else {
-    $e = new \Exception("Extention '{$extention}' is not supported\n");
-    throw $e;      
+    switch ($extention) {
+      case 'yml':
+        $value = Yaml::parse($fileContent, Yaml::PARSE_OBJECT_FOR_MAP);
+        $array = get_object_vars($value);
+        break;
+      case 'json':
+        $array = json_decode($fileContent, true);
+        break;      
+      default:
+        $e = new \Exception("Extention '{$extention}' is not supported\n");
+        throw $e; 
+        break;
     }
     return $array;  
-    //сделать исключение для формата файла
   } else {    
     $e = new \Exception("'{$filePath}' is not exist\n");
     throw $e;
