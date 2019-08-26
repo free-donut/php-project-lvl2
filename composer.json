@@ -19,8 +19,7 @@
     "autoload": {
         "files": [
             "src/diff.php",
-            "src/test.php",
-            "src/parse.php",
+             "src/parse.php",
             "src/builder.php",
             "src/render.php",
             "src/plain.php"
