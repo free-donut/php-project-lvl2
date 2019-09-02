@@ -1,6 +1,14 @@
 #!/usr/bin/env php
 <?php
 
+$autoloadPath1 = __DIR__ . '/../../../autoload.php';
+$autoloadPath2 = __DIR__ . '/../vendor/autoload.php';
+if (file_exists($autoloadPath1)) {
+    require_once $autoloadPath1;
+} else {
+    require_once $autoloadPath2;
+}
+
 $doc = <<<DOC
 Generate diff
 
@@ -14,38 +22,13 @@ Options:
 
 DOC;
 
-$pathToDocopt1 = __DIR__ . '/../../../docopt/docopt/src/docopt.php';
-$pathToDocopt2 = __DIR__ . '/../vendor/docopt/docopt/src/docopt.php';
-if (file_exists($pathToDocopt1)) {
-    require_once $pathToDocopt1;
-} else {
-    require_once $pathToDocopt2;
-}
-
 $args = Docopt::handle($doc, array('version'=>'Generate diff 2.0'));
-//foreach ($args as $k=>$v)
-//    echo $k.': '.json_encode($v).PHP_EOL;
-
-$autoloadPath1 = __DIR__ . '/../../../autoload.php';
-$autoloadPath2 = __DIR__ . '/../vendor/autoload.php';
-if (file_exists($autoloadPath1)) {
-    require_once $autoloadPath1;
-} else {
-    require_once $autoloadPath2;
-}
-
-
 $format = $args['--format'];
-//var_dump($args);
 
 try {
-  [$pathToFile1, $pathToFile2] = [$args['<firstFile>'], $args['<secondFile>']];
-  $diff = GenDiff\Diff\getDiff($pathToFile1, $pathToFile2, $format);
-  print_r($diff);
+    [$pathToFile1, $pathToFile2] = [$args['<firstFile>'], $args['<secondFile>']];
+    $diff = GenDiff\Diff\getDiff($pathToFile1, $pathToFile2, $format);
+    print_r($diff);
 } catch (\Exception $e) {
-  echo $e->getMessage();
+    echo $e->getMessage();
 }
-/*
-[$pathToFile1, $pathToFile2] = [$args['<firstFile>'], $args['<secondFile>']];
-$diff = GenDiff\Diff\getDiff($pathToFile1, $pathToFile2, $format);
-print_r($diff);*/
