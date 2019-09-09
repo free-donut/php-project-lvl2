@@ -1,5 +1,5 @@
 <?php
-namespace GenDiff\Render;
+namespace GenDiff\Formatters\Render;
 
 const ADD = '  + ';
 const DELETE = '  - ';

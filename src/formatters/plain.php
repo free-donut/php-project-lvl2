@@ -1,7 +1,7 @@
 <?php
-namespace GenDiff\Plain;
+namespace GenDiff\Formatters\Plain;
 
-use function GenDiff\Render\boolToString;
+use function GenDiff\Formatters\Render\boolToString;
 
 function convertValue($value)
 {

@@ -2,18 +2,28 @@
 namespace GenDiff\Diff;
 
 use \Funct\Collection;
-use function GenDiff\Parse\parser;
-use function GenDiff\Render\getRender;
+use function GenDiff\Parser\parse;
 use function GenDiff\Builder\buildAST;
-use function GenDiff\Plain\getPlain;
+use function GenDiff\Formatters\Render\getRender;
+use function GenDiff\Formatters\Plain\getPlain;
 
+function getData($filePath)
+{
+    if (file_exists($filePath)) {
+        $fileContent = file_get_contents($filePath);
+        $extention = pathinfo($filePath, PATHINFO_EXTENSION);
+        $data = parse($fileContent, $extention);
+        return $data;
+    } else {
+        $e = new \Exception("'{$filePath}' is not exist\n");
+        throw $e;
+    }
+}
 
 function getDiff($pathToFile1, $pathToFile2, $format)
 {
-
-    $beforeData = parser($pathToFile1);
-    $afterData = parser($pathToFile2);
-
+    $beforeData = getData($pathToFile1);
+    $afterData = getData($pathToFile2);
     $ast = buildAST($beforeData, $afterData);
 
     switch ($format) {
