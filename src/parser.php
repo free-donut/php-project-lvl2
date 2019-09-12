@@ -1,17 +1,16 @@
 <?php
-namespace GenDiff\Parser;
+namespace Differ\Parser;
 
 use Symfony\Component\Yaml\Yaml;
 
-function parse($fileContent, $extention)
+function parse($сontent, $extention)
 {
     switch ($extention) {
         case 'yml':
-            $value = Yaml::parse($fileContent, Yaml::PARSE_OBJECT_FOR_MAP);
-            $data = get_object_vars($value);
+            $data = Yaml::parse($сontent);
             break;
         case 'json':
-            $data = json_decode($fileContent, true);
+            $data = json_decode($сontent, true);
             break;
         default:
             $e = new \Exception("Extention '{$extention}' is not supported\n");

@@ -27,7 +27,7 @@ $format = $args['--format'];
 
 try {
     [$pathToFile1, $pathToFile2] = [$args['<firstFile>'], $args['<secondFile>']];
-    $diff = GenDiff\Diff\getDiff($pathToFile1, $pathToFile2, $format);
+    $diff = Differ\getDiff($pathToFile1, $pathToFile2, $format);
     print_r($diff);
 } catch (\Exception $e) {
     echo $e->getMessage();

@@ -1,5 +1,5 @@
 <?php
-namespace GenDiff\Builder;
+namespace Differ\Builder;
 
 use \Funct\Collection;
 
@@ -21,7 +21,7 @@ function buildAST($beforeData, $afterData)
     
     $ast = array_map(function ($key) use ($beforeData, $afterData) {
         if (isset($beforeData[$key]) && isset($afterData[$key])) {
-            if ($beforeData[$key] == $afterData[$key]) {
+            if ($beforeData[$key] === $afterData[$key]) {
                 $node = buildNode('unchanged', $key, $beforeData[$key], $afterData[$key], '');
                 return $node;
             } elseif (is_array($beforeData[$key]) && is_array($afterData[$key])) {

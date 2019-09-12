@@ -1,7 +1,7 @@
 <?php
-namespace GenDiff\Formatters\Plain;
+namespace Differ\Formatters\Plain;
 
-use function GenDiff\Formatters\Render\boolToString;
+use function Differ\Formatters\Pretty\boolToString;
 
 function convertValue($value)
 {
@@ -15,7 +15,7 @@ function convertValue($value)
 function getPlain($ast, $parent = '')
 {
     $view = array_reduce($ast, function ($acc, $node) use ($parent) {
-        if ($parent == '') {
+        if ($parent === '') {
             $property = $node["key"];
         } else {
             $property = $parent . "." . $node["key"];

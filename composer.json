@@ -19,9 +19,9 @@
     "autoload": {
         "files": [
             "src/diff.php",
-            "src/parse.php",
+            "src/parser.php",
             "src/builder.php",
-            "src/formatters/render.php",
+            "src/formatters/pretty.php",
             "src/formatters/plain.php"
         ],
         "psr-4": {

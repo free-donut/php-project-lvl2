@@ -1,6 +1,5 @@
 <?php
-namespace GenDiff\Formatters\Render;
-
+namespace Differ\Formatters\Pretty;
 const ADD = '  + ';
 const DELETE = '  - ';
 const INDENT = '    ';
@@ -32,14 +31,14 @@ function convertValue($value, $indent)
         return boolToString($value);
     }
 }
-function render($ast, $indent = '')
+function renderPretty($ast, $indent = '')
 {
     $view = array_reduce($ast, function ($acc, $node) use ($indent) {
         $key = $node['key'];
         switch ($node["type"]) {
             case 'array':
                 $newIndent = $indent . INDENT;
-                $nested = render($node['child'], $newIndent);
+                $nested = renderPretty($node['child'], $newIndent);
                 $newAcc = $acc . INDENT . $key . ": {\n" . $nested . INDENT . "}\n";
                 break;
             case 'unchanged':
@@ -66,8 +65,8 @@ function render($ast, $indent = '')
     return  $view;
 }
 
-function getRender($ast)
+function getPretty($ast)
 {
-    $render = render($ast, '');
+    $render = renderPretty($ast, '');
     return  "{\n$render}\n";
 }

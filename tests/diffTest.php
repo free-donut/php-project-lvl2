@@ -1,10 +1,10 @@
 <?php
 
-namespace GenDiff\Tests;
+namespace Differ\Tests;
 
 use PHPUnit\Framework\TestCase;
 
-use function GenDiff\Diff\getDiff;
+use function Differ\getDiff;
 
 class DiffTest extends TestCase
 {
@@ -33,8 +33,8 @@ class DiffTest extends TestCase
     public function additionProviderDiff()
     {
         return [
-            ['json_flat', 'before.json', 'after.json', 'json'],
-            ['json_nested', 'before1.json', 'after1.json', 'json'],
+            ['pretty_flat', 'before.json', 'after.json', 'pretty'],
+            ['pretty_nested', 'before1.json', 'after1.json', 'pretty'],
             ['plain_flat', 'before.yml', 'after.yml', 'plain'],
             ['plain_nested', 'before1.json', 'after1.json', 'plain']
         ];
