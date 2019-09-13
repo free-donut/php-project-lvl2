@@ -76,25 +76,21 @@ function renderPretty($ast, $indent = '')
         switch ($node["type"]) {
             case 'array':
                 $item = getArrayItem($node['child'], $key, $indent);
-                $newAcc = $acc . $item;
                 break;
             case 'unchanged':
                 $item = getUnchangedItem($node['beforeValue'], $key, $indent);
-                $newAcc = $acc . $item;
                 break;
             case 'changed':
                 $item = getChangedItem($node['beforeValue'], $node['afterValue'], $key, $indent);
-                $newAcc = $acc . $item;
                 break;
             case 'deleted':
                 $item = getDeletedItem($node['beforeValue'], $key, $indent);
-                $newAcc = $acc . $item;
                 break;
             case 'added':
                 $item = getAddedItem($node['afterValue'], $key, $indent);
-                $newAcc = $acc . $item;
                 break;
         }
+        $newAcc = $acc . $item;
         return $newAcc;
     }, '');
     return  $view;
