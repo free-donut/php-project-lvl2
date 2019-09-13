@@ -36,11 +36,7 @@ function getAddedMessage($afterValue, $property)
 function getPlain($ast, $parent = '')
 {
     $view = array_reduce($ast, function ($acc, $node) use ($parent) {
-        if ($parent === '') {
-            $property = $node["key"];
-        } else {
-            $property = $parent . "." . $node["key"];
-        }
+        $property = ($parent === '') ? $node["key"] : $parent . "." . $node["key"];
         switch ($node["type"]) {
             case 'unchanged':
                 $elem = '';
