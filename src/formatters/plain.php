@@ -12,6 +12,27 @@ function convertValue($value)
     }
 }
 
+function getChangedMessage($beforeValue, $afterValue, $property)
+{
+    $beforeValueConverted = convertValue($beforeValue);
+    $afterValueConverted = convertValue($afterValue);
+    $message = "Property '$property' was changed. From '$beforeValueConverted' to '$afterValueConverted'\n";
+    return $message;
+}
+
+function getDeletedMessage($property)
+{
+    $message = "Property '$property' was removed\n";
+    return $message;
+}
+
+function getAddedMessage($afterValue, $property)
+{
+    $afterValueConverted = convertValue($afterValue);
+    $message = "Property '$property' was added with value: '$afterValueConverted'\n";
+    return $message;
+}
+
 function getPlain($ast, $parent = '')
 {
     $view = array_reduce($ast, function ($acc, $node) use ($parent) {
@@ -28,16 +49,13 @@ function getPlain($ast, $parent = '')
                 $elem = getPlain($node["child"], $property);
                 break;
             case 'changed':
-                $beforeValue = convertValue($node['beforeValue']);
-                $afterValue = convertValue($node['afterValue']);
-                $elem = "Property '$property' was changed. From '$beforeValue' to '$afterValue'\n";
+                $elem = getChangedMessage($node['beforeValue'], $node['afterValue'], $property);
                 break;
             case 'deleted':
-                $elem = "Property '$property' was removed\n";
+                $elem = getDeletedMessage($property);
                 break;
             case 'added':
-                $afterValue = convertValue($node['afterValue']);
-                $elem = "Property '$property' was added with value: '$afterValue'\n";
+                $elem = getAddedMessage($node['afterValue'], $property);
                 break;
         }
         $newAcc = $acc . $elem;
