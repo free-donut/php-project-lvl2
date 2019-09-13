@@ -1,5 +1,5 @@
 <?php
-namespace Differ;
+namespace Differ\Diff;
 
 use \Funct\Collection;
 use function Differ\Parser\parse;

@@ -46,7 +46,6 @@ function renderPretty($ast, $indent = '')
                 $newAcc = $acc . $indent . INDENT . $key . ": $elem\n";
                 break;
             case 'changed':
-                //node с типом 'изменен' может содержать только строки
                 $beforeElem = boolToString($node['beforeValue']);
                 $afterElem = boolToString($node['afterValue']);
                 $newAcc = $acc . $indent . ADD . $key . ": $afterElem\n" . $indent . DELETE . $key . ": $beforeElem\n";
