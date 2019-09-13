@@ -31,32 +31,68 @@ function convertValue($value, $indent)
         return boolToString($value);
     }
 }
+
+function getArrayItem($child, $key, $indent)
+{
+    $newIndent = $indent . INDENT;
+    $nested = renderPretty($child, $newIndent);
+    $item = INDENT . $key . ": {\n" . $nested . INDENT . "}\n";
+    return $item;
+}
+
+function getUnchangedItem($value, $key, $indent)
+{
+    $elem = convertValue($value, $indent);
+    $item = $indent . INDENT . $key . ": $elem\n";
+    return $item;
+}
+
+function getChangedItem($beforeValue, $afterValue, $key, $indent)
+{
+    $beforeElem = boolToString($beforeValue);
+    $afterElem = boolToString($afterValue);
+    $item = $indent . ADD . $key . ": $afterElem\n" . $indent . DELETE . $key . ": $beforeElem\n";
+    return $item;
+}
+
+function getDeletedItem($value, $key, $indent)
+{
+    $deletedElem = convertValue($value, $indent);
+    $item = $indent . DELETE . $key . ": $deletedElem\n";
+    return $item;
+}
+
+function getAddedItem($value, $key, $indent)
+{
+    $addedElem = convertValue($value, $indent);
+    $item = $indent . ADD . $key . ": $addedElem\n";
+    return $item;
+}
+
 function renderPretty($ast, $indent = '')
 {
     $view = array_reduce($ast, function ($acc, $node) use ($indent) {
         $key = $node['key'];
         switch ($node["type"]) {
             case 'array':
-                $newIndent = $indent . INDENT;
-                $nested = renderPretty($node['child'], $newIndent);
-                $newAcc = $acc . INDENT . $key . ": {\n" . $nested . INDENT . "}\n";
+                $item = getArrayItem($node['child'], $key, $indent);
+                $newAcc = $acc . $item;
                 break;
             case 'unchanged':
-                $elem = convertValue($node['beforeValue'], $indent);
-                $newAcc = $acc . $indent . INDENT . $key . ": $elem\n";
+                $item = getUnchangedItem($node['beforeValue'], $key, $indent);
+                $newAcc = $acc . $item;
                 break;
             case 'changed':
-                $beforeElem = boolToString($node['beforeValue']);
-                $afterElem = boolToString($node['afterValue']);
-                $newAcc = $acc . $indent . ADD . $key . ": $afterElem\n" . $indent . DELETE . $key . ": $beforeElem\n";
+                $item = getChangedItem($node['beforeValue'], $node['afterValue'], $key, $indent);
+                $newAcc = $acc . $item;
                 break;
             case 'deleted':
-                $deletedElem = convertValue($node['beforeValue'], $indent);
-                $newAcc = $acc . $indent . DELETE . $key . ": $deletedElem\n";
+                $item = getDeletedItem($node['beforeValue'], $key, $indent);
+                $newAcc = $acc . $item;
                 break;
             case 'added':
-                $addedElem = convertValue($node['afterValue'], $indent);
-                $newAcc = $acc . $indent . ADD . $key . ": $addedElem\n";
+                $item = getAddedItem($node['afterValue'], $key, $indent);
+                $newAcc = $acc . $item;
                 break;
         }
         return $newAcc;
