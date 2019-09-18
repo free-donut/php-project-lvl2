@@ -1,7 +1,8 @@
 <?php
-namespace Differ\Formatters\Plain;
+namespace Differ\formatters\plain;
 
-use function Differ\Formatters\Pretty\boolToString;
+use function Differ\formatters\pretty\boolToString;
+use \Funct\Collection;
 
 function convertValue($value)
 {
@@ -12,50 +13,28 @@ function convertValue($value)
     }
 }
 
-function getChangedMessage($beforeValue, $afterValue, $property)
-{
-    $beforeValueConverted = convertValue($beforeValue);
-    $afterValueConverted = convertValue($afterValue);
-    $message = "Property '$property' was changed. From '$beforeValueConverted' to '$afterValueConverted'\n";
-    return $message;
-}
-
-function getDeletedMessage($property)
-{
-    $message = "Property '$property' was removed\n";
-    return $message;
-}
-
-function getAddedMessage($afterValue, $property)
-{
-    $afterValueConverted = convertValue($afterValue);
-    $message = "Property '$property' was added with value: '$afterValueConverted'\n";
-    return $message;
-}
-
 function getPlain($ast, $parent = '')
 {
     $view = array_reduce($ast, function ($acc, $node) use ($parent) {
         $property = ($parent === '') ? $node["key"] : $parent . "." . $node["key"];
         switch ($node["type"]) {
-            case 'unchanged':
-                $elem = '';
-                break;
             case 'array':
-                $elem = getPlain($node["child"], $property);
+                $acc[] = getPlain($node["child"], $property);
                 break;
             case 'changed':
-                $elem = getChangedMessage($node['beforeValue'], $node['afterValue'], $property);
+                $beforeValue = convertValue($node['beforeValue']);
+                $afterValue = convertValue($node['afterValue']);
+                $acc[] = "Property '$property' was changed. From '$beforeValue' to '$afterValue'";
                 break;
             case 'deleted':
-                $elem = getDeletedMessage($property);
+                $acc[] = "Property '$property' was removed";
                 break;
             case 'added':
-                $elem = getAddedMessage($node['afterValue'], $property);
+                $afterValue = convertValue($node['afterValue']);
+                $acc[] = "Property '$property' was added with value: '$afterValue'";
                 break;
         }
-        $newAcc = $acc . $elem;
-        return $newAcc;
-    }, '');
-    return $view;
+        return $acc;
+    }, []);
+    return implode(PHP_EOL, $view);
 }

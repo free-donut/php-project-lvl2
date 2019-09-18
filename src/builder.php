@@ -1,5 +1,5 @@
 <?php
-namespace Differ\Builder;
+namespace Differ\builder;
 
 use \Funct\Collection;
 

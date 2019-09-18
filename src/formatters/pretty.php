@@ -1,5 +1,5 @@
 <?php
-namespace Differ\Formatters\Pretty;
+namespace Differ\formatters\pretty;
 const ADD = '  + ';
 const DELETE = '  - ';
 const INDENT = '    ';
@@ -32,72 +32,43 @@ function convertValue($value, $indent)
     }
 }
 
-function getArrayItem($child, $key, $indent)
+function renderPretty($ast, $depth = 0)
 {
-    $newIndent = $indent . INDENT;
-    $nested = renderPretty($child, $newIndent);
-    $item = INDENT . $key . ": {\n" . $nested . INDENT . "}\n";
-    return $item;
-}
-
-function getUnchangedItem($value, $key, $indent)
-{
-    $elem = convertValue($value, $indent);
-    $item = $indent . INDENT . $key . ": $elem\n";
-    return $item;
-}
-
-function getChangedItem($beforeValue, $afterValue, $key, $indent)
-{
-    $beforeElem = boolToString($beforeValue);
-    $afterElem = boolToString($afterValue);
-    $item = $indent . ADD . $key . ": $afterElem\n" . $indent . DELETE . $key . ": $beforeElem\n";
-    return $item;
-}
-
-function getDeletedItem($value, $key, $indent)
-{
-    $deletedElem = convertValue($value, $indent);
-    $item = $indent . DELETE . $key . ": $deletedElem\n";
-    return $item;
-}
-
-function getAddedItem($value, $key, $indent)
-{
-    $addedElem = convertValue($value, $indent);
-    $item = $indent . ADD . $key . ": $addedElem\n";
-    return $item;
-}
-
-function renderPretty($ast, $indent = '')
-{
-    $view = array_reduce($ast, function ($acc, $node) use ($indent) {
+    $view = array_map(function ($node) use ($depth) {
+        $indent = str_repeat(INDENT, $depth);
         $key = $node['key'];
         switch ($node["type"]) {
             case 'array':
-                $item = getArrayItem($node['child'], $key, $indent);
+                $newDepth = $depth + 1;
+                $nested = renderPretty($node['child'], $newDepth);
+                $item = INDENT . $key . ": {" . $nested . INDENT . "}";
                 break;
             case 'unchanged':
-                $item = getUnchangedItem($node['beforeValue'], $key, $indent);
+                $elem = convertValue($node['beforeValue'], $indent);
+                $item = $indent . INDENT . $key . ": $elem";
                 break;
             case 'changed':
-                $item = getChangedItem($node['beforeValue'], $node['afterValue'], $key, $indent);
+                $beforeElem = boolToString($node['beforeValue']);
+                $afterElem = boolToString($node['afterValue']);
+                $item = $indent . ADD . $key . ": $afterElem\n" . $indent . DELETE . $key . ": $beforeElem";
                 break;
             case 'deleted':
-                $item = getDeletedItem($node['beforeValue'], $key, $indent);
+                $deletedElem = convertValue($node['beforeValue'], $indent);
+                $item = $indent . DELETE . $key . ": $deletedElem";
                 break;
             case 'added':
-                $item = getAddedItem($node['afterValue'], $key, $indent);
+                $addedElem = convertValue($node['afterValue'], $indent);
+                $item = $indent . ADD . $key . ": $addedElem";
                 break;
         }
-        $newAcc = $acc . $item;
-        return $newAcc;
-    }, '');
-    return  $view;
+        return $item;
+    }, $ast);
+    $view = implode(PHP_EOL, $view);
+    return "\n$view\n";
 }
 
 function getPretty($ast)
 {
-    $render = renderPretty($ast, '');
-    return  "{\n$render}\n";
+    $render = renderPretty($ast);
+    return "{" . $render . "}";
 }

@@ -1,11 +1,11 @@
 <?php
-namespace Differ\Parser;
+namespace Differ\parser;
 
 use Symfony\Component\Yaml\Yaml;
 
-function parse($сontent, $extention)
+function parse($сontent, $dataType)
 {
-    switch ($extention) {
+    switch ($dataType) {
         case 'yml':
             $data = Yaml::parse($сontent);
             break;
@@ -13,7 +13,7 @@ function parse($сontent, $extention)
             $data = json_decode($сontent, true);
             break;
         default:
-            $e = new \Exception("Extention '{$extention}' is not supported\n");
+            $e = new \Exception("Extention '{$dataType}' is not supported\n");
             throw $e;
             break;
     }

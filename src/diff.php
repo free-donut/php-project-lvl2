@@ -1,11 +1,11 @@
 <?php
-namespace Differ\Diff;
+namespace Differ\diff;
 
 use \Funct\Collection;
-use function Differ\Parser\parse;
-use function Differ\Builder\buildAST;
-use function Differ\Formatters\Pretty\getPretty;
-use function Differ\Formatters\Plain\getPlain;
+use function Differ\parser\parse;
+use function Differ\builder\buildAST;
+use function Differ\formatters\Pretty\getPretty;
+use function Differ\formatters\Plain\getPlain;
 
 function getData($filePath)
 {
@@ -44,6 +44,6 @@ function getDiff($pathToFile1, $pathToFile2, $format)
     $beforeData = getData($pathToFile1);
     $afterData = getData($pathToFile2);
     $ast = buildAST($beforeData, $afterData);
-    $diff = render($ast, $format);
+    $diff = render($ast, $format) . PHP_EOL;
     return $diff;
 }
